@@ -15,17 +15,14 @@ public:
                 return true;
             }
             
-            if (prevSumSet.count(runningSum) && i - prevSumSet[runningSum] >= 2){
-                return true;
-            }
-            
-            if (prevSumSet.count(runningSum) != 0){
-                prevSumSet[runningSum] = min(i, prevSumSet[runningSum]);
+            if (prevSumSet.count(runningSum)){
+                if (i - prevSumSet[runningSum] >= 2){
+                    return true;
+                }
             }else{
                 prevSumSet[runningSum] = i;
             }
         }
-        
         return false;
     }
 };
