@@ -8,45 +8,24 @@
  * };
  */
 class Solution {
-    pair<int, int> maxPathSumHelper(TreeNode* root){
+    int maxPathSumHelper(TreeNode* root, int& maxPathOverall){
+        if(root == NULL){
+            return 0;
+        }
 
-        if (root->left == NULL && root->right == NULL){
-            cout << root->val << ", " << root->val << endl;
-            return pair<int, int>(root->val,root->val);
-        }
+        int maxPathEndAtLeft = max(0, maxPathSumHelper(root->left, maxPathOverall));
+        int maxPathEndAtRight = max(0, maxPathSumHelper(root->right, maxPathOverall));
         
+        maxPathOverall = max(maxPathOverall, maxPathEndAtLeft + root->val +maxPathEndAtRight);
         
-        int maxEndAtNode = numeric_limits<int>::min();
-        int maxNotEndAtNode = numeric_limits<int>::min();
-        int pathLengthPassingRoot = root->val;
-        if (root->left != NULL){
-            pair<int,int> leftRes = maxPathSumHelper(root->left);
-            maxEndAtNode = max(maxEndAtNode, leftRes.first);
-            maxNotEndAtNode = max(maxNotEndAtNode, leftRes.second);
-            pathLengthPassingRoot = leftRes.first > 0 ? pathLengthPassingRoot + leftRes.first : pathLengthPassingRoot;
-        }
-        
-        if (root->right != NULL){
-            pair<int,int> rightRes = maxPathSumHelper(root->right);
-            maxEndAtNode = max(maxEndAtNode, rightRes.first);
-            maxNotEndAtNode = max(maxNotEndAtNode, rightRes.second);
-            pathLengthPassingRoot =  rightRes.first > 0 ? pathLengthPassingRoot + rightRes.first : pathLengthPassingRoot;
-        }
-        
-        
-        
-        pair<int,int> res;
-        res.first = maxEndAtNode > 0 ? maxEndAtNode + root->val : root->val;
-        res.second = max(max(pathLengthPassingRoot, maxNotEndAtNode), res.first);
-
-        return res;
-        
+        return max(maxPathEndAtLeft + root->val , maxPathEndAtRight + root->val);
     }
 public:
     int maxPathSum(TreeNode* root) {
-        pair<int, int> res = maxPathSumHelper(root);
+        int maxPathOverall = numeric_limits<int>::min();
+        int maxPthEndAtRoot = maxPathSumHelper(root, maxPathOverall);
         
-        return res.second;
+        return maxPathOverall;
 
     }
 };
