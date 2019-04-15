@@ -8,18 +8,16 @@
  * };
  */
 class Solution {
-    void findLeftestNode(TreeNode* root, int& index){
+    int findLeftestNode(TreeNode* root){
         if (root == NULL){
-            return;
+            return 0;
         }
         
-        int leftIndex = 0;
-        findLeftestNode(root->left, leftIndex);
+        int leftIndex = findLeftestNode(root->left);
         
-        int rightIndex = 0;
-        findLeftestNode(root->right, rightIndex);
+        int rightIndex = findLeftestNode(root->right);
         
-        index = max(leftIndex + 1, rightIndex - 1);
+        return max(leftIndex + 1, rightIndex - 1);
 
     }
 public:
@@ -29,8 +27,7 @@ public:
             return result;
         }
         
-        int mostLeftIndex = 0;
-        findLeftestNode(root, mostLeftIndex);
+        int mostLeftIndex = findLeftestNode(root);
         mostLeftIndex--;
         
         queue<pair<TreeNode*, int>> nodeQ;
