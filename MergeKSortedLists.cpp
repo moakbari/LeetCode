@@ -7,40 +7,36 @@
  * };
  */
 class Solution {
-    using PairType = pair<int, int>;
     struct greater{
-        bool operator()(const PairType& left, const PairType& right){
-            return left.first > right.first;
+        bool operator ()(const ListNode* left, const ListNode* right){
+            return left->val > right->val;
         }
-    };    
+    };
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        priority_queue<PairType, vector<PairType>, greater> minHeap;
+        priority_queue<ListNode*, vector<ListNode*>, greater> minHeap;
         
-        int j = 0;
-        for_each(lists.begin(), lists.end(), [&minHeap, j](ListNode* node) mutable -> void {
+        for_each(lists.begin(), lists.end(), [&minHeap](ListNode* node){
             if (node != NULL){
-                minHeap.push(PairType(node->val, j));                
+                minHeap.push(node);                
             }
-            j++;
         });
         
         ListNode* head = NULL;
         ListNode* curNode = NULL;
         while(!minHeap.empty()){
-            PairType top = minHeap.top();
+            ListNode* top = minHeap.top();
             minHeap.pop();
             if (head == NULL){
-                head = lists[top.second];
+                head = top;
                 curNode = head;
             }else{
-                curNode->next = lists[top.second];
+                curNode->next = top;
                 curNode = curNode->next;
             }
             
-            if (lists[top.second]->next != NULL){
-                lists[top.second] = lists[top.second]->next;
-                minHeap.push(PairType(lists[top.second]->val, top.second));
+            if (top->next != NULL){
+                minHeap.push(top->next);
             }
         }
         
