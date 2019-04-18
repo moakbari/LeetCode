@@ -37,8 +37,6 @@ public:
                 funStack.pop();
                 prevTimeStamp = timeStamp + 1;
             }
-            
-            
         }
                 
         return timeSpent;
